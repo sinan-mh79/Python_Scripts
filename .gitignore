@@ -1,0 +1,74 @@
+.env
+instance
+
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Flask stuff
+instance/
+*.db
+*.sqlite3
+*.sqlite
+.env
+.env.*
+*.log
+*.pot
+*.pyc
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv/
+.env/
+
+# Pytest cache
+.pytest_cache/
+
+# IDEs and editors
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# Node modules (if using frontend)
+node_modules/
+
+# Coverage reports
+htmlcov/
+.coverage
+coverage.xml
+*.cover
