@@ -1,7 +1,7 @@
 
 Flask-Bcrypt
 Flask-Mail
-Flask==2.3.6
+Flask
 Flask-SQLAlchemy==3.0.5
 Flask-Limiter==2.11.0
 PyMySQL==1.1.1
