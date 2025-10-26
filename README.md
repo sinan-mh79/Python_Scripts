@@ -7,44 +7,6 @@ A secure web application for **User Registration, Login, Email Verification, and
 
 ---
 
-## Project Structure
-
-```
-
-flask_auth_app/
-│
-├── app/
-│   ├── **init**.py
-│   ├── routes.py
-│   ├── models.py
-│   ├── utils.py
-│   ├── templates/
-│   │   ├── home.html
-│   │   ├── register.html
-│   │   ├── login.html
-│   │   ├── dashboard.html
-│   │   ├── forgot_password.html
-│   │   └── reset_password.html
-│   └── static/
-│       └── css/
-│           └── style.css
-│
-├── screenshots/
-│   ├── home.png
-│   ├── login_error.png
-│   ├── login_success.png
-│   ├── logout.png
-│   └── register_error.png
-│
-├── .env
-├── run.py
-├── requirements.txt
-└── README.md
-
-````
-
----
-
 ## Features
 
 - User registration with validation  
