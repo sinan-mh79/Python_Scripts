@@ -81,17 +81,3 @@ Open your browser at `http://127.0.0.1:5000/`
 3. Verified users can log in and access the dashboard.
 4. Password reset is available via secure email link.
 
----
-
-## License
-
-This project is open-source and free to use.
-
-```
-
----
-
-If you want, I can **also make it visually “GitHub ready” with clickable sections and badges** so it looks modern and professional.  
-
-Do you want me to do that next?
-```
