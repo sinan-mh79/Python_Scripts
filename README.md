@@ -1,4 +1,4 @@
-Great! I can help you create a polished `README.md` for your Flask project that includes images, descriptions, and a professional layout. Since you already have screenshots in the `screenshots/` folder, we can reference them directly. Here’s an example of a full `README.md` that will look good on GitHub:
+
 
 ```markdown
 # Flask Login and Registration Portal

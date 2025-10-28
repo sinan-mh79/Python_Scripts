@@ -13,7 +13,7 @@ def send_email(to_email, subject, body):
         sender_password = os.environ.get("SMTP_PASSWORD")
 
         if not sender_email or not sender_password:
-            print(" SMTP credentials missing in .env file.")
+            print(" missing Emails in .env file.")
             return
 
         

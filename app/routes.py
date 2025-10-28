@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from flask_limiter.errors import RateLimitExceeded
 import re, secrets
+from datetime import datetime
 from . import db, limiter
 from .models import User
 from .email_utils import send_email
@@ -10,15 +11,17 @@ main = Blueprint("main", __name__)
 # Rate Limit Handler
 @main.errorhandler(RateLimitExceeded)
 def ratelimit_handler(e):
-    flash("Please wait!", "error")
+    flash("Too many requests! Please wait a moment.", "error")
     return redirect(url_for("main.home"))
 
-# Home page
+
+# Home page 
 @main.route("/")
 def home():
     return render_template("home.html")
 
-# Register
+
+#Register 
 @main.route("/register", methods=["GET", "POST"])
 @limiter.limit("5 per minute")
 def register():
@@ -40,6 +43,7 @@ def register():
             flash("Username or email already exists", "error")
             return redirect(url_for("main.register"))
 
+        # Password validation
         if len(password) < 8 or not re.search(r"\d", password) \
            or not re.search(r"[A-Z]", password) or not re.search(r"[a-z]", password) \
            or not re.search(r"[!@#$%^&*()_+=\-{}\[\]:;\"'<>,.?/]", password):
@@ -58,12 +62,13 @@ def register():
             flash("Registration successful! Check your email to verify.", "success")
         except Exception as e:
             print(f"Email error: {e}")
-            flash("Registration successful! Email could not be sent. Check console.", "warning")
+            flash("Email could not be sent. Check console for verification link.", "warning")
             print(f"Verification link: {link}")
 
         return redirect(url_for("main.login"))
 
     return render_template("register.html")
+
 
 # Email verification
 @main.route("/verify/<token>")
@@ -78,7 +83,8 @@ def verify_email(token):
     flash("Email verified successfully!", "success")
     return redirect(url_for("main.login"))
 
-# Login
+
+# Login 
 @main.route("/login", methods=["GET", "POST"])
 @limiter.limit("5 per minute")
 def login():
@@ -112,7 +118,8 @@ def login():
 
     return render_template("login.html")
 
-# Dashboard
+
+# Dashboard 
 @main.route("/dashboard")
 def dashboard():
     if "user_id" not in session:
@@ -121,26 +128,31 @@ def dashboard():
     user = User.query.get(session["user_id"])
     return render_template("dashboard.html", user=user)
 
-# Logout
+
+#  Logout 
 @main.route("/logout")
 def logout():
     session.clear()
     flash("Logged out successfully.", "info")
     return redirect(url_for("main.home"))
 
-# Forgot password
+
+# Forgot Password
 @main.route("/forgot_password", methods=["GET", "POST"])
 def forgot_password():
     if request.method == "POST":
         email = request.form.get("email")
         user = User.query.filter_by(email=email).first()
+
         if not user:
             flash("No user found with this email.", "error")
             return redirect(url_for("main.forgot_password"))
 
         token = secrets.token_urlsafe(16)
         user.reset_token = token
+        user.token_sent = datetime.utcnow()
         db.session.commit()
+
         link = url_for("main.reset_password", token=token, _external=True)
         try:
             send_email(email, "Reset your password", f"Click here to reset your password:\n{link}")
@@ -154,7 +166,8 @@ def forgot_password():
 
     return render_template("forgot_password.html")
 
-# Reset password
+
+# Reset Password
 @main.route("/reset_password/<token>", methods=["GET", "POST"])
 def reset_password(token):
     user = User.query.filter_by(reset_token=token).first()
@@ -162,12 +175,23 @@ def reset_password(token):
         flash("Invalid or expired reset link.", "error")
         return redirect(url_for("main.home"))
 
+    # Token valid Only 15 minutes 
+    if user.token_sent and (datetime.utcnow() - user.token_sent).total_seconds() > 900:
+        flash("Reset link expired. Please try again.", "error")
+        return redirect(url_for("main.forgot_password"))
+
     if request.method == "POST":
         password = request.form.get("password")
+
+        if len(password) < 8:
+            flash("Password must be at least 8 characters long.", "error")
+            return redirect(url_for("main.reset_password", token=token))
+
         user.set_password(password)
         user.reset_token = None
+        user.token_sent = None
         db.session.commit()
         flash("Password reset successful!", "success")
         return redirect(url_for("main.login"))
 
-    return render_template("forgot_password.html", reset=True)
+    return render_template("reset_password.html", token=token)

@@ -7,4 +7,3 @@ Flask-Limiter
 PyMySQL
 Werkzeug
 python-dotenv
-
