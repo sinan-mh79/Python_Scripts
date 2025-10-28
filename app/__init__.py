@@ -1,29 +1,29 @@
+import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from dotenv import load_dotenv
-import os
 
 load_dotenv()
 
 db = SQLAlchemy()
-limiter = Limiter(key_func=get_remote_address)
+limiter = Limiter(get_remote_address)
 
 def create_app():
     app = Flask(__name__)
-    app.secret_key = os.environ.get("FLASK_SECRET_KEY", "dev_secret_key")
-
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL", "sqlite:///database.db")
-    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.config["SECRET_KEY"] = os.getenv("FLASK_SECRET_KEY")
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
 
     db.init_app(app)
     limiter.init_app(app)
 
-    from . import routes
-    app.register_blueprint(routes.main)
+    from .routes import main
+    app.register_blueprint(main)
+
 
     with app.app_context():
         db.create_all()
+        print("Database tables created or already exist.")
 
     return app
