@@ -1,6 +1,6 @@
-from app import app  # if you are importing app directly
-from waitress import serve
+from app import app
+import os
 
 if __name__ == "__main__":
-    # Waitress is a production-ready server (faster than Flask built-in)
-    serve(app, host="0.0.0.0", port=5000)
+    port = int(os.environ.get("PORT", 5000))  # Render auto-assigns this
+    app.run(host="0.0.0.0", port=port)
