@@ -1,23 +1,45 @@
-import smtplib
-from email.mime.text import MIMEText
 import os
+import requests
+import traceback
 
 def send_email(to_email, subject, message):
-    smtp_email = os.getenv("SMTP_EMAIL")
-    smtp_pass = os.getenv("SMTP_PASSWORD")
-    smtp_server = os.getenv("SMTP_SERVER")
-    smtp_port = int(os.getenv("SMTP_PORT", 587))
+    sendgrid_api_key = os.getenv("SENDGRID_API_KEY")
+    from_email = os.getenv("FROM_EMAIL")
 
-    msg = MIMEText(message)
-    msg["Subject"] = subject
-    msg["From"] = smtp_email
-    msg["To"] = to_email
+    if not sendgrid_api_key or not from_email:
+        print("⚠️ [Email Warning] Missing SENDGRID_API_KEY or FROM_EMAIL environment variable.")
+        return False
+
+    data = {
+        "personalizations": [{"to": [{"email": to_email}]}],
+        "from": {"email": from_email},
+        "subject": subject,
+        "content": [{"type": "text/plain", "value": message}],
+    }
 
     try:
-        with smtplib.SMTP(smtp_server, smtp_port) as server:
-            server.starttls()
-            server.login(smtp_email, smtp_pass)
-            server.send_message(msg)
-            print(f"Email sent to {to_email}")
+        response = requests.post(
+            "https://api.sendgrid.com/v3/mail/send",
+            headers={
+                "Authorization": f"Bearer {sendgrid_api_key}",
+                "Content-Type": "application/json",
+            },
+            json=data,
+            timeout=10
+        )
+
+        if response.status_code >= 400:
+            print(f"⚠️ [Email Error] SendGrid returned {response.status_code}: {response.text}")
+            return False
+
+        print(f"✅ Email sent successfully to {to_email}")
+        return True
+
+    except requests.exceptions.RequestException as e:
+        print(f"⚠️ [Email Warning] Network error sending email: {e}")
+        return False
+
     except Exception as e:
-        print(f" Error sending email: {e}")
+        print(f"⚠️ [Email Warning] Unexpected error sending email: {e}")
+        traceback.print_exc()
+        return False
