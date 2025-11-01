@@ -2,7 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from config import Config
-from sqlalchemy import text 
+from sqlalchemy import text
 
 db = SQLAlchemy()
 
@@ -26,14 +26,17 @@ def create_app():
 
     with app.app_context():
         try:
-            #  SQLAlchemy 2.x connection test
             with db.engine.connect() as conn:
                 conn.execute(text("SELECT 1"))
-
             db.create_all()
-            print(" Connected to MySQL and tables created")
+            print(" Connected to MySQL and tables created.")
         except Exception as e:
-            print(" Failed to connect to MySQL:", e)
-            raise e
+            print(f"⚠️ MySQL connection failed: {e}")
+            app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///fallback.db"
+            db.init_app(app)
+            with db.engine.connect() as conn:
+                conn.execute(text("SELECT 1"))
+            db.create_all()
+            print(" Using SQLite fallback database.")
 
     return app

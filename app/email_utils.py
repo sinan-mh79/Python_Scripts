@@ -1,45 +1,40 @@
 import os
-import requests
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 import traceback
 
 def send_email(to_email, subject, message):
-    sendgrid_api_key = os.getenv("SENDGRID_API_KEY")
-    from_email = os.getenv("FROM_EMAIL")
+    smtp_email = os.getenv("SMTP_EMAIL")
+    smtp_password = os.getenv("SMTP_PASSWORD")
+    smtp_server = os.getenv("SMTP_SERVER", "smtp.gmail.com")
+    smtp_port = int(os.getenv("SMTP_PORT", 587))
 
-    if not sendgrid_api_key or not from_email:
-        print("⚠️ [Email Warning] Missing SENDGRID_API_KEY or FROM_EMAIL environment variable.")
+    if not smtp_email or not smtp_password:
+        print("⚠️ [Email Disabled] Missing SMTP credentials. Email skipped.")
         return False
 
-    data = {
-        "personalizations": [{"to": [{"email": to_email}]}],
-        "from": {"email": from_email},
-        "subject": subject,
-        "content": [{"type": "text/plain", "value": message}],
-    }
-
     try:
-        response = requests.post(
-            "https://api.sendgrid.com/v3/mail/send",
-            headers={
-                "Authorization": f"Bearer {sendgrid_api_key}",
-                "Content-Type": "application/json",
-            },
-            json=data,
-            timeout=10
-        )
+        msg = MIMEMultipart()
+        msg["From"] = smtp_email
+        msg["To"] = to_email
+        msg["Subject"] = subject
+        msg.attach(MIMEText(message, "plain"))
 
-        if response.status_code >= 400:
-            print(f"⚠️ [Email Error] SendGrid returned {response.status_code}: {response.text}")
-            return False
+        with smtplib.SMTP(smtp_server, smtp_port) as server:
+            server.starttls()
+            server.login(smtp_email, smtp_password)
+            server.send_message(msg)
 
         print(f"✅ Email sent successfully to {to_email}")
         return True
 
-    except requests.exceptions.RequestException as e:
-        print(f"⚠️ [Email Warning] Network error sending email: {e}")
+    except smtplib.SMTPException as e:
+        print(f"⚠️ [Email Error] SMTP error: {e}")
+        traceback.print_exc()
         return False
 
     except Exception as e:
-        print(f"⚠️ [Email Warning] Unexpected error sending email: {e}")
+        print(f"⚠️ [Email Error] Unexpected error: {e}")
         traceback.print_exc()
         return False
