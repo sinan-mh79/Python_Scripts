@@ -2,7 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from config import Config
-from sqlalchemy import text   # ✅ Needed for raw SQL
+from sqlalchemy import text 
 
 db = SQLAlchemy()
 
