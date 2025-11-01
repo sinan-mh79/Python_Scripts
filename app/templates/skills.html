@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/skills.css') }}">
+
+<main class="skills-page">
+    <div class="skills-container">
+        <h1>Technical Skills</h1>
+        <p class="subtitle">Here’s a showcase of my key technical abilities and focus areas.</p>
+
+        <div class="skills-grid">
+            <div class="skill-card">
+                <h3>Frontend Development</h3>
+                <p>HTML, CSS, JavaScript, React (Basics)</p>
+            </div>
+
+            <div class="skill-card">
+                <h3>Backend Development</h3>
+                <p>Python, Flask, Node.js, Express.js</p>
+            </div>
+
+            <div class="skill-card">
+                <h3>Database Management</h3>
+                <p>MySQL, SQLite, MongoDB</p>
+            </div>
+
+        
+        </div>
+
+        <div class="mt-4">
+            <a href="{{ url_for('user.profile') }}" class="btn btn-outline-secondary">Back to Profile</a>
+        </div>
+    </div>
+</main>
+
+
+
+{% endblock %}

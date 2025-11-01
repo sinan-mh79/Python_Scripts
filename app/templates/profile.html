@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+
+<main class="profile-page">
+    <div class="profile-container text-center">
+
+        <!-- 🖼️ Profile Picture -->
+        <img src="{{ url_for('static', filename='images/profile.jpg') }}" alt="Profile Picture" class="profile-pic">
+
+        <h1>Mohammed Sinan</h1>
+        <p class="subtitle">B.C.A. Graduate | Full Stack Developer | AI & Flask Enthusiast</p>
+
+        <div class="info-section text-start">
+            <h3>About Me</h3>
+            <p>
+                Hi! I’m Mohammed Sinan, a passionate developer with a strong interest in full-stack development,
+                AI integration, and web-based automation. I enjoy building practical tools that simplify real-world
+                tasks and learning new technologies along the way.
+            </p>
+        </div>
+
+        <div class="info-section text-start">
+            <h3>Technical Background</h3>
+            <ul>
+                <li>🎓 <strong>Degree:</strong> Bachelor of Computer Applications (B.C.A.)</li>
+                <li>💻 <strong>Field:</strong> Full Stack Web Development & AI Applications</li>
+                <li>🧠 <strong>Languages Known:</strong> English, Malayalam, Hindi</li>
+            </ul>
+        </div>
+
+        <!-- 🎯 Buttons Section -->
+        <div class="mt-4">
+            <a href="{{ url_for('user.projects') }}" class="btn btn-primary me-2">View Projects</a>
+            <a href="{{ url_for('user.skills') }}" class="btn btn-success me-2">View Skills</a>
+            <a href="{{ url_for('user.contact') }}" class="btn btn-outline-secondary">Contact Me</a>
+        </div>
+    </div>
+</main>
+
+
+
+{% endblock %}

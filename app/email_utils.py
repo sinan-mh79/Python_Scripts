@@ -11,7 +11,7 @@ def send_email(to_email, subject, message):
     smtp_port = int(os.getenv("SMTP_PORT", 587))
 
     if not smtp_email or not smtp_password:
-        print("⚠️ [Email Disabled] Missing SMTP credentials. Email skipped.")
+        print(" [Email Disabled] Missing SMTP credentials. Email skipped.")
         return False
 
     try:
@@ -26,15 +26,15 @@ def send_email(to_email, subject, message):
             server.login(smtp_email, smtp_password)
             server.send_message(msg)
 
-        print(f"✅ Email sent successfully to {to_email}")
+        print(f" Email sent successfully to {to_email}")
         return True
 
     except smtplib.SMTPException as e:
-        print(f"⚠️ [Email Error] SMTP error: {e}")
+        print(f" [Email Error] SMTP error: {e}")
         traceback.print_exc()
         return False
 
     except Exception as e:
-        print(f"⚠️ [Email Error] Unexpected error: {e}")
+        print(f" [Email Error] Unexpected error: {e}")
         traceback.print_exc()
         return False

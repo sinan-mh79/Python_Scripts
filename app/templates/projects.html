@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/projects.css') }}">
+<script src="https://kit.fontawesome.com/a2e0e6d55c.js" crossorigin="anonymous"></script>
+
+<main class="projects-page">
+    <div class="projects-container text-center">
+        <h1>Projects</h1>
+        <p class="subtitle">A collection of my web apps and Python tools</p>
+
+        <div class="projects-grid">
+            <!-- Project 1 -->
+            <div class="project-card">
+                <h5 class="project-title">📸 Photorithm AI</h5>
+                <p>AI-based image editing web app built collaboratively.</p>
+                <p class="project-tech">Flask, AI APIs, HTML, CSS, JS</p>
+                <a href="https://photorithm.vercel.app/" target="_blank" class="view-btn">View Project</a>
+            </div>
+
+            <!-- Project 2 -->
+            <div class="project-card">
+                <h5 class="project-title">💼 Personal Portfolio</h5>
+                <p>Responsive portfolio showcasing skills and projects.</p>
+                <p class="project-tech">HTML, CSS, JS, Flask</p>
+                <a href="https://sinan-mh79.github.io/personalprotfolio/" target="_blank" class="view-btn">View
+                    Project</a>
+            </div>
+
+            <!-- Project 3 -->
+            <div class="project-card">
+                <h5 class="project-title">🍽️ Zomato Clone</h5>
+                <p>Restaurant discovery app inspired by Zomato.</p>
+                <p class="project-tech">Express, MongoDB, React (basic)</p>
+                <a href="https://sinan-mh79.github.io/zomatoclonne/" target="_blank" class="view-btn">View Project</a>
+            </div>
+
+            <!-- Project 4 -->
+            <div class="project-card">
+                <h5 class="project-title">🗂️ File Renamer</h5>
+                <p>Python script to batch rename files intelligently.</p>
+                <p class="project-tech">Python (os, argparse)</p>
+            </div>
+
+            <!-- Project 5 -->
+            <div class="project-card">
+                <h5 class="project-title">🔍 IP Address Scanner</h5>
+                <p>Discover live hosts and open ports in your network.</p>
+                <p class="project-tech">Python (socket, scapy)</p>
+            </div>
+
+            <!-- Project 6 -->
+            <div class="project-card">
+                <h5 class="project-title">📑 Log Reader & Analyzer</h5>
+                <p>Parses logs and summarizes warnings/errors.</p>
+                <p class="project-tech">Python (re, csv, json)</p>
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <a href="{{ url_for('user.profile') }}" class="btn btn-outline-primary">
+                ← Go Back to Profile
+            </a>
+        </div>
+    </div>
+</main>
+
+
+{% endblock %}

@@ -1,0 +1,113 @@
+/* 🌤️ Page Background & Layout */
+body {
+    background: linear-gradient(135deg, #b0d9f7 0%, #e2ecfc 100%);
+    font-family: "Poppins", sans-serif;
+    color: #1a1a1a;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 📦 Centered Wrapper */
+.verify-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 20px;
+}
+
+/* 📬 Email Sent Card */
+.verify-card {
+    background: linear-gradient(145deg, #ffffff, #f5f7fa);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    padding: 45px 35px;
+    max-width: 480px;
+    width: 100%;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.verify-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.12);
+}
+
+/* ✉️ Floating Icon */
+.verify-icon {
+    font-size: 3rem;
+    color: #2575fc;
+    margin-bottom: 18px;
+    animation: float 1.8s ease-in-out infinite alternate;
+}
+
+@keyframes float {
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(-6px);
+    }
+}
+
+/* 🏷️ Text */
+h2 {
+    color: #1e293b;
+    font-weight: 700;
+    font-size: 1.8rem;
+    margin-bottom: 12px;
+}
+
+p {
+    color: #475569;
+    font-size: 1rem;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.text-muted {
+    color: #6c757d !important;
+}
+
+/* 🎯 Button */
+.btn-success {
+    background: linear-gradient(90deg, #2575fc 0%, #6a11cb 100%);
+    border: none;
+    font-weight: 600;
+    border-radius: 10px;
+    padding: 10px 28px;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(37, 117, 252, 0.3);
+    transition: all 0.3s ease;
+}
+
+.btn-success:hover {
+    background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 6px 16px rgba(37, 117, 252, 0.35);
+}
+
+/* 📱 Responsive */
+@media (max-width: 768px) {
+    .verify-card {
+        margin: 40px 20px;
+        padding: 35px 25px;
+    }
+
+    h2 {
+        font-size: 1.6rem;
+    }
+
+    .verify-icon {
+        font-size: 2.6rem;
+    }
+
+    .btn-success {
+        width: 100%;
+        padding: 12px;
+    }
+}

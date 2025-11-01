@@ -1,0 +1,146 @@
+/* 🔹 Global Styles */
+body {
+    background: linear-gradient(135deg, #b0d9f7 0%, #e3ecfc 100%);
+    font-family: "Poppins", sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    color: #1e293b;
+}
+
+/* 🧭 Header */
+header {
+    width: 100%;
+    background: #0d6efd;
+    color: #fff;
+    text-align: center;
+    padding: 15px 0;
+    font-weight: 600;
+    font-size: 1.1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 10;
+}
+
+/* 📦 Auth Container Wrapper */
+.auth-wrapper {
+    flex: 1;
+    /* Pushes footer down */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 20px;
+}
+
+/* 🧩 Auth Card */
+.auth-card {
+    background: linear-gradient(145deg, #ffffff, #f8fafc);
+    border-radius: 20px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+    padding: 40px 35px;
+    max-width: 450px;
+    width: 100%;
+    text-align: center;
+    transition: all 0.3s ease-in-out;
+}
+
+.auth-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* 🏷️ Heading */
+h3 {
+    color: #1e293b;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    margin-bottom: 25px;
+}
+
+/* ✍️ Form Inputs */
+.form-control {
+    border-radius: 10px;
+    border: 1px solid #cbd5e1;
+    box-shadow: none;
+    transition: all 0.2s ease-in-out;
+    padding: 10px 14px;
+}
+
+.form-control:focus {
+    border-color: #6a11cb;
+    box-shadow: 0 0 6px rgba(106, 17, 203, 0.3);
+}
+
+/* 🧷 Input Group (Password Visibility) */
+.input-group .btn {
+    border-radius: 0 10px 10px 0;
+    border-left: 0;
+    background: linear-gradient(90deg, #2575fc 0%, #6a11cb 100%);
+    color: #fff;
+    transition: all 0.3s ease-in-out;
+}
+
+.input-group .btn:hover {
+    background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+}
+
+/* 🎯 Submit Button */
+.auth-btn {
+    background: linear-gradient(90deg, #2575fc 0%, #6a11cb 100%);
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    border-radius: 10px;
+    padding: 10px 25px;
+    margin-top: 10px;
+    transition: all 0.3s ease-in-out;
+}
+
+.auth-btn:hover {
+    background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(37, 117, 252, 0.3);
+}
+
+/* 🔗 Links */
+a {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease-in-out;
+}
+
+a:hover {
+    color: #6a11cb;
+    text-decoration: underline;
+}
+
+/* 🧱 Footer */
+footer {
+    width: 100%;
+    background: #212529;
+    color: white;
+    text-align: center;
+    font-size: 0.9rem;
+    padding: 12px 0;
+    margin-top: auto;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 📱 Responsive */
+@media (max-width: 768px) {
+    .auth-card {
+        padding: 30px 25px;
+    }
+
+    h3 {
+        font-size: 1.4rem;
+    }
+
+    .auth-btn {
+        width: 100%;
+        padding: 12px;
+    }
+}

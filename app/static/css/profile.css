@@ -1,0 +1,139 @@
+/* 🌟 Profile Page Layout */
+.profile-page {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 60px 20px;
+    background: linear-gradient(135deg, #e3ecfc, #f7f9fc);
+    min-height: calc(100vh - 100px);
+    font-family: "Poppins", sans-serif;
+}
+
+/* 🧩 Profile Container */
+.profile-container {
+    background: linear-gradient(145deg, #ffffff, #f5f7fa);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    padding: 40px 50px;
+    max-width: 750px;
+    width: 100%;
+    text-align: center;
+    transition: all 0.3s ease-in-out;
+}
+
+.profile-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.1);
+}
+
+/* 👤 Profile Image */
+.profile-pic {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #2575fc;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+}
+
+.profile-pic:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(37, 117, 252, 0.3);
+}
+
+/* 🏷️ Headings */
+h1 {
+    font-size: 2rem;
+    color: #1e293b;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    color: #64748b;
+    font-size: 1rem;
+    margin-bottom: 30px;
+}
+
+/* 📄 Info Sections */
+.info-section {
+    margin-bottom: 25px;
+    text-align: left;
+}
+
+.info-section h3 {
+    color: #2575fc;
+    font-size: 1.15rem;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.info-section p,
+.info-section ul {
+    color: #334155;
+    font-size: 0.97rem;
+    line-height: 1.7;
+}
+
+.info-section ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.info-section li::before {
+    content: "•";
+    color: #2575fc;
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+}
+
+/* 🎯 Buttons */
+.btn {
+    border-radius: 10px;
+    padding: 10px 24px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-secondary {
+    border: 2px solid #64748b;
+    color: #475569;
+    background: transparent;
+}
+
+.btn-outline-secondary:hover {
+    background: #2575fc;
+    color: #fff;
+    border-color: #2575fc;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(37, 117, 252, 0.3);
+}
+
+/* 📱 Responsive */
+@media (max-width: 768px) {
+    .profile-container {
+        padding: 25px 20px;
+    }
+
+    .profile-pic {
+        width: 100px;
+        height: 100px;
+    }
+
+    h1 {
+        font-size: 1.6rem;
+    }
+
+    .info-section h3 {
+        font-size: 1rem;
+    }
+
+    .btn {
+        width: 100%;
+        margin-top: 10px;
+    }
+}

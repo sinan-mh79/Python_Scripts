@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/contact.css') }}">
+<script src="https://kit.fontawesome.com/a2e0e6d55c.js" crossorigin="anonymous"></script>
+
+<main class="contact-page">
+    <div class="contact-container text-center">
+        <h1>Contact Me</h1>
+        <p class="subtitle">Let’s connect for collaborations, projects, or discussions!</p>
+
+        <div class="contact-info mt-4">
+            <p><strong>Email:</strong> <a href="mailto:sinanmhd79@gmail.com">sinanmhd79@gmail.com</a></p>
+            <p><strong>Phone:</strong> <a href="tel:+919539307301">+91 7975085530</a></p>
+        </div>
+
+        <!-- 🌐 Social Buttons -->
+        <div class="social-buttons mt-4">
+            <a href="https://github.com/sinan-mh79" target="_blank" class="btn btn-github">
+                <i class="fab fa-github"></i> GitHub
+            </a>
+            <a href="https://www.linkedin.com/in/mahammed-sinan-929898376/" target="_blank" class="btn btn-linkedin">
+                <i class="fab fa-linkedin"></i> LinkedIn
+            </a>
+        </div>
+
+        <!-- ⬅️ Back Button -->
+        <div class="mt-4">
+            <a href="{{ url_for('user.profile') }}" class="btn btn-outline-primary">
+                ← Go Back to Profile
+            </a>
+        </div>
+    </div>
+</main>
+
+
+
+{% endblock %}

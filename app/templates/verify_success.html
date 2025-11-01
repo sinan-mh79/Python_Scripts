@@ -1,77 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
 
-<style>
-    body {
-        background: linear-gradient(135deg, #b0d9f7 0%, #d9e4f5 100%);
-        font-family: "Poppins", sans-serif;
-    }
-
-    .verify-card {
-        background: linear-gradient(145deg, #ffffff, #f5f7fa);
-        border-radius: 20px;
-        box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.1);
-        padding: 40px 30px;
-        max-width: 500px;
-        margin: 80px auto;
-        text-align: center;
-        transition: transform 0.3s ease-in-out;
-    }
-
-    .verify-card:hover {
-        transform: translateY(-5px);
-    }
-
-    .verify-icon {
-        font-size: 3rem;
-        color: #28a745;
-        margin-bottom: 15px;
-        animation: pop 0.6s ease-in-out;
-    }
-
-    @keyframes pop {
-        0% {
-            transform: scale(0.5);
-            opacity: 0;
-        }
-
-        100% {
-            transform: scale(1);
-            opacity: 1;
-        }
-    }
-
-    h2 {
-        color: #2c3e50;
-        font-weight: 600;
-        margin-bottom: 15px;
-    }
-
-    p {
-        color: #555;
-    }
-
-    .btn-primary {
-        background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
-        border: none;
-        font-weight: 600;
-        border-radius: 10px;
-        padding: 10px 25px;
-        transition: background 0.3s ease-in-out, transform 0.2s;
-    }
-
-    .btn-primary:hover {
-        background: linear-gradient(90deg, #2575fc 0%, #6a11cb 100%);
-        transform: scale(1.05);
-    }
-</style>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/verify_success.css') }}">
 
 <div class="container">
     <div class="verify-card">
         <div class="verify-icon">✅</div>
         <h2>Email Verified Successfully!</h2>
         <p class="lead">Your account has been verified. You can now log in to your dashboard.</p>
-        <a href="{{ url_for('main.login') }}" class="btn btn-primary mt-3">Go to Login</a>
+        <a href="{{ url_for('auth.login') }}" class="btn btn-primary mt-3">Go to Login</a>
     </div>
 </div>
 

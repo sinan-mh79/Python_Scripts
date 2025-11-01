@@ -1,0 +1,107 @@
+/* === GLOBAL LAYOUT === */
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', 'Roboto', sans-serif;
+    color: #1a1a1a;
+    background: linear-gradient(135deg, #f4f6f8, #e8ecf1);
+    /* subtle soft gray-blue gradient */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    line-height: 1.6;
+    transition: background 0.5s ease;
+}
+
+/* === MAIN SECTION === */
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+/* === FOOTER === */
+footer {
+    background: #1e293b;
+    /* Deep neutral navy */
+    color: #e2e8f0;
+    text-align: center;
+    padding: 20px 0;
+    font-size: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    flex-shrink: 0;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
+}
+
+footer a {
+    color: #3b82f6;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+footer a:hover {
+    color: #60a5fa;
+}
+
+/* === FLASH MESSAGE === */
+.flash-message {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 10px 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    font-size: 0.95rem;
+    transition: opacity 0.5s ease;
+}
+
+/* === NAVBAR === */
+.navbar {
+    background: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.navbar-brand {
+    color: #0d6efd !important;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.nav-link {
+    color: #1e293b !important;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: #0d6efd !important;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+    main {
+        padding: 1.2rem;
+    }
+
+    footer {
+        font-size: 13px;
+        padding: 15px 0;
+    }
+}

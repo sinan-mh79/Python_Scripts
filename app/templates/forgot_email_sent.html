@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/forgot_email_sent.css') }}">
+
+<div class="verify-wrapper">
+    <div class="verify-card">
+        <div class="verify-icon">📩</div>
+        <h2>Check Your Email</h2>
+        <p class="lead">
+            We sent a password reset link to your email.<br>
+            Please check your inbox and click the link to reset your password.
+        </p>
+
+        <p class="text-muted small mt-2">
+            Didn’t receive an email? Check your spam folder.
+        </p>
+
+        <!-- ✅ Corrected route: auth.login -->
+        <a href="{{ url_for('auth.login') }}" class="btn btn-success mt-3">Go to Login</a>
+    </div>
+</div>
+
+{% endblock %}

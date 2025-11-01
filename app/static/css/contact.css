@@ -1,0 +1,137 @@
+/* 🌐 Contact Page Layout */
+.contact-page {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 60px 20px;
+    background: linear-gradient(135deg, #f4f6f8, #e8ecf1);
+    /* Softer professional gradient */
+    min-height: calc(100vh - 100px);
+}
+
+/* 🧩 Container */
+.contact-container {
+    background: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
+    padding: 40px 45px;
+    max-width: 600px;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+.contact-container:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+}
+
+/* 🏷️ Headings */
+h1 {
+    font-size: 2rem;
+    color: #0d6efd;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.subtitle {
+    color: #64748b;
+    /* neutral gray-blue tone */
+    font-size: 1rem;
+    margin-bottom: 30px;
+}
+
+/* ✉️ Contact Info */
+.contact-info p {
+    font-size: 0.95rem;
+    color: #334155;
+    margin-bottom: 10px;
+}
+
+.contact-info a {
+    color: #0d6efd;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.contact-info a:hover {
+    color: #0b5ed7;
+    text-decoration: underline;
+}
+
+/* 🔗 Social Buttons */
+.social-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.btn-github,
+.btn-linkedin {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-github {
+    background-color: #24292f;
+}
+
+.btn-github:hover {
+    background-color: #000;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.btn-linkedin {
+    background-color: #0077b5;
+}
+
+.btn-linkedin:hover {
+    background-color: #005b8f;
+    box-shadow: 0 4px 10px rgba(0, 119, 181, 0.3);
+}
+
+/* 🎯 Back Button */
+.btn-outline-primary {
+    border: 2px solid #0d6efd;
+    color: #0d6efd;
+    border-radius: 8px;
+    padding: 10px 24px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    margin-top: 25px;
+}
+
+.btn-outline-primary:hover {
+    background-color: #0d6efd;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+}
+
+/* 📱 Responsive */
+@media (max-width: 768px) {
+    .contact-container {
+        padding: 25px 20px;
+    }
+
+    h1 {
+        font-size: 1.6rem;
+    }
+
+    .subtitle {
+        font-size: 0.9rem;
+    }
+
+    .social-buttons {
+        flex-direction: column;
+        gap: 12px;
+    }
+}

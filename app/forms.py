@@ -4,7 +4,7 @@ from wtforms.validators import DataRequired, Email, EqualTo, Length, ValidationE
 import re
 
 
-# --- Custom Password Validator ---
+# Custom Password Validator
 def strong_password(form, field):
     password = field.data
     if len(password) < 6:
@@ -15,7 +15,7 @@ def strong_password(form, field):
         raise ValidationError("Password must contain at least one special character (!@#$%^&* etc).")
 
 
-# --- Register Form ---
+# Register Form 
 class RegisterForm(FlaskForm):
     username = StringField(
         "Username",
@@ -45,7 +45,7 @@ class RegisterForm(FlaskForm):
     submit = SubmitField("Register")
 
 
-# --- Login Form ---
+#  Login Form 
 class LoginForm(FlaskForm):
     email = StringField(
         "Email", validators=[DataRequired(), Email(message="Enter a valid email address.")]
@@ -54,7 +54,7 @@ class LoginForm(FlaskForm):
     submit = SubmitField("Login")
 
 
-# --- Forgot Password Form ---
+# Forgot Password Form 
 class ForgotPasswordForm(FlaskForm):
     email = StringField(
         "Email", validators=[DataRequired(), Email(message="Enter a valid email address.")]
@@ -62,7 +62,7 @@ class ForgotPasswordForm(FlaskForm):
     submit = SubmitField("Send Reset Link")
 
 
-# --- Reset Password Form ---
+#  Reset Password Form 
 class ResetPasswordForm(FlaskForm):
     password = PasswordField(
         "New Password",
