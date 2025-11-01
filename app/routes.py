@@ -1,229 +1,172 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, session, request
-from flask_limiter.errors import RateLimitExceeded
-from datetime import datetime
-from functools import wraps
-import re, secrets
-
-from . import db, limiter
-from .models import User
-from .email_utils import send_email
+from flask import Blueprint, render_template, redirect, url_for, flash, request
+from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadSignature
+from flask_login import login_user, logout_user, login_required, current_user
+from .models import User, db
 from .forms import RegisterForm, LoginForm, ForgotPasswordForm, ResetPasswordForm
+from .email_utils import send_email
+import os
 
 main = Blueprint("main", __name__)
+s = URLSafeTimedSerializer(os.getenv("FLASK_SECRET_KEY", "dev_secret"))
 
-
-
-# Rate Limit Handler
-@main.errorhandler(RateLimitExceeded)
-def ratelimit_handler(e):
-    flash("Too many requests! Please wait a moment.", "error")
-    return redirect(url_for("main.home"))
-
-
-# Login Required Decorator
-def login_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if "user_id" not in session:
-            flash("Please login first.", "error")
-            return redirect(url_for("main.login"))
-        return f(*args, **kwargs)
-    return decorated_function
-
-
-# Home Page
 
 @main.route("/")
 def home():
-    return render_template("home.html")
+    return render_template("home.html", title="Home")
 
-
-
-# Register
 
 @main.route("/register", methods=["GET", "POST"])
-@limiter.limit("5 per minute")
 def register():
+    if current_user.is_authenticated:
+        return redirect(url_for("main.dashboard"))
+
     form = RegisterForm()
     if form.validate_on_submit():
         username = form.username.data.strip()
-        email = form.email.data.strip()
+        email = form.email.data.strip().lower()
         password = form.password.data
 
-        
-        if User.query.filter((User.username == username) | (User.email == email)).first():
-            flash("Username or email already exists", "error")
+        if User.query.filter_by(email=email).first():
+            flash("Email already registered!", "danger")
             return redirect(url_for("main.register"))
 
-        
-        if len(password) < 8 or not re.search(r"\d", password) \
-           or not re.search(r"[A-Z]", password) or not re.search(r"[a-z]", password) \
-           or not re.search(r"[!@#$%^&*()_+=\-{}\[\]:;\"'<>,.?/]", password):
-            flash("Weak password! Include upper, lower, number, and special character.", "error")
-            return redirect(url_for("main.register"))
-
-        token = secrets.token_urlsafe(16)
-        user = User(username=username, email=email, verification_token=token)
+        user = User(username=username, email=email)
         user.set_password(password)
         db.session.add(user)
         db.session.commit()
 
+        token = s.dumps(email, salt="email-confirm")
         link = url_for("main.verify_email", token=token, _external=True)
-        try:
-            send_email(email, "Verify your email", f"Click here to verify your account:\n{link}")
-            flash("Registration successful! Please check your email for verification link.", "success")
-        except Exception as e:
-            print(f"Email error: {e}")
-            flash("Email could not be sent. Check console for verification link.", "warning")
-            print(f"Verification link: {link}")
+        send_email(email, "Verify Your Email", f"Click here to verify your email:\n{link}")
 
-        return redirect(url_for("main.login"))
+        flash("Verification email sent! Please check your inbox.", "info")
+        return render_template("blank.html", title="Verify Email")
 
-    return render_template("register.html", form=form)
+    return render_template("register.html", form=form, title="Register")
 
-# Email Verification
 
-@main.route("/verify/<token>")
+@main.route("/verify_email/<token>")
 def verify_email(token):
-    user = User.query.filter_by(verification_token=token).first()
+    try:
+        email = s.loads(token, salt="email-confirm", max_age=3600)
+    except (SignatureExpired, BadSignature):
+        flash("Invalid or expired verification link.", "danger")
+        return redirect(url_for("main.register"))
+
+    user = User.query.filter_by(email=email).first()
     if not user:
-        flash("Invalid or expired verification link!", "error")
-        return redirect(url_for("main.home"))
+        flash("User not found.", "danger")
+        return redirect(url_for("main.register"))
 
     user.is_verified = True
-    user.verification_token = None
     db.session.commit()
-    flash("Email verified successfully! You can now login.", "success")
-    return redirect(url_for("main.login"))
+    return render_template("verify_success.html", title="Email Verified")
 
-
-
-# Login
 
 @main.route("/login", methods=["GET", "POST"])
-@limiter.limit("5 per minute")
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for("main.dashboard"))
+
     form = LoginForm()
     if form.validate_on_submit():
-        username = form.username.data
-        password = form.password.data
+        email = form.email.data.strip().lower()
+        user = User.query.filter_by(email=email).first()
 
-        user = User.query.filter_by(username=username).first()
-
-        if not user or not user.check_password(password):
-            flash("Invalid username or password.", "error")
+        if not user or not user.check_password(form.password.data):
+            flash("Invalid email or password.", "danger")
             return redirect(url_for("main.login"))
 
-        
         if not user.is_verified:
-            token = secrets.token_urlsafe(16)
-            user.verification_token = token
-            db.session.commit()
-            link = url_for("main.verify_email", token=token, _external=True)
-            try:
-                send_email(user.email, "Verify your email", f"Click to verify:\n{link}")
-                flash("Please verify your email. New verification link sent.", "warning")
-            except Exception as e:
-                print(f"Email sending error: {e}")
-                flash("Please verify your email. Check console for link.", "warning")
-                print(f"Verification link: {link}")
+            flash("Please verify your email before logging in.", "warning")
             return redirect(url_for("main.login"))
 
-        # Login user
-        session["user_id"] = user.id
-        session["username"] = user.username
+        login_user(user)
         flash(f"Welcome {user.username}!", "success")
         return redirect(url_for("main.dashboard"))
 
-    return render_template("login.html", form=form)
+    return render_template("login.html", form=form, title="Login")
 
-
-
-# Dashboard 
 
 @main.route("/dashboard")
 @login_required
 def dashboard():
-    user = User.query.get(session["user_id"])
-    return render_template("dashboard.html", user=user)
+    return render_template("dashboard.html", user=current_user, title="Dashboard")
 
-
-# Logout
 
 @main.route("/logout")
+@login_required
 def logout():
-    session.clear()
-    flash("Logged out successfully.", "info")
-    return redirect(url_for("main.home"))
+    logout_user()
+    flash("You have been logged out successfully.", "info")
+    return redirect(url_for("main.login"))
 
 
-# Forgot Password
 @main.route("/forgot_password", methods=["GET", "POST"])
 def forgot_password():
+    if current_user.is_authenticated:
+        return redirect(url_for("main.dashboard"))
+
     form = ForgotPasswordForm()
     if form.validate_on_submit():
-        email = form.email.data
+        email = form.email.data.strip().lower()
         user = User.query.filter_by(email=email).first()
-
         if not user:
-            flash("No user found with this email.", "error")
+            flash("No account found with that email.", "danger")
             return redirect(url_for("main.forgot_password"))
 
-        token = secrets.token_urlsafe(16)
-        user.reset_token = token
-        user.token_sent = datetime.utcnow()
-        db.session.commit()
-
+        token = s.dumps(email, salt="password-reset")
         link = url_for("main.reset_password", token=token, _external=True)
-        try:
-            send_email(email, "Reset your password", f"Click here to reset your password:\n{link}")
-            flash("Password reset link sent! Check your email.", "success")
-        except Exception as e:
-            print(f"Email sending error: {e}")
-            flash("Password reset link could not be sent. Check console.", "warning")
-            print(f"Reset link: {link}")
+        send_email(email, "Reset Password", f"Click here to reset your password:\n{link}")
 
-        return redirect(url_for("main.login"))
+        flash("Password reset link sent! Check your inbox.", "info")
+        return render_template("blank2.html", title="Forgot Password")  
 
-    return render_template("forgot_password.html", form=form)
+    return render_template("forgot_password.html", form=form, title="Forgot Password")
 
-
-# Reset Password
 
 @main.route("/reset_password/<token>", methods=["GET", "POST"])
 def reset_password(token):
-    form = ResetPasswordForm()
-    user = User.query.filter_by(reset_token=token).first()
-
-    if not user:
-        flash("Invalid or expired reset link.", "error")
-        return redirect(url_for("main.home"))
-
-    
-    if user.token_sent and (datetime.utcnow() - user.token_sent).total_seconds() > 900:
-        flash("Reset link expired. Please try again.", "error")
+    try:
+        email = s.loads(token, salt="password-reset", max_age=3600)
+    except (SignatureExpired, BadSignature):
+        flash("Invalid or expired password reset link.", "danger")
         return redirect(url_for("main.forgot_password"))
 
+    form = ResetPasswordForm()
     if form.validate_on_submit():
-        password = form.password.data
+        user = User.query.filter_by(email=email).first()
+        if not user:
+            flash("User not found.", "danger")
+            return redirect(url_for("main.register"))
 
-        user.set_password(password)
-        user.reset_token = None
-        user.token_sent = None
+        if user.check_password(form.password.data):
+            flash("New password cannot be the same as your previous password.", "warning")
+            return redirect(url_for("main.reset_password", token=token))
+
+        user.set_password(form.password.data)
         db.session.commit()
-
-        flash("Password reset successful! You can now login.", "success")
+        flash("Password reset successful! You can now log in.", "success")
         return redirect(url_for("main.login"))
 
-    return render_template("reset_password.html", form=form, token=token)
+    return render_template("reset_password.html", form=form, title="Reset Password")
 
 
-
-# Prevent Browser Cache 
 @main.after_request
 def add_header(response):
-    """Ensure sensitive pages aren't cached by browser."""
-    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0"
-    response.headers["Pragma"] = "no-cache"
-    response.headers["Expires"] = "0"
+    nocache_routes = [
+        "main.login",
+        "main.logout",
+        "main.register",
+        "main.dashboard",
+        "main.forgot_password",
+        "main.reset_password",
+        "main.verify_email",
+    ]
+
+    if request.endpoint in nocache_routes:
+        response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0"
+        response.headers["Pragma"] = "no-cache"
+        response.headers["Expires"] = "0"
+
     return response
