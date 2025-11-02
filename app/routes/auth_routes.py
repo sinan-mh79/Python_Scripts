@@ -8,10 +8,10 @@ from ..email_utils import send_email
 from . import auth
 import os
 
-# Serializer for email verification tokens
+
 s = URLSafeTimedSerializer(os.getenv("FLASK_SECRET_KEY", "dev_secret"))
 
-# Constants for login attempt limits
+
 MAX_LOGIN_ATTEMPTS = 5
 LOCKOUT_TIME_MINUTES = 15
 
@@ -120,7 +120,7 @@ def login():
             session["login_attempts"] = login_data
 
         login_user(user)
-        #flash(f"Welcome back, {user.username}!", "success")
+        #
         return redirect(url_for("user.dashboard"))
 
     return render_template("login.html", form=form, title="Login")

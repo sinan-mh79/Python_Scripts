@@ -47,7 +47,7 @@ def reset_password(token):
     user = User.query.filter_by(email=email).first()
     if not user:
         flash("User not found.", "danger")
-        return redirect(url_for("auth.register"))  # ✅ correct blueprint
+        return redirect(url_for("auth.register"))  
 
     form = ResetPasswordForm()
     if form.validate_on_submit():
@@ -60,6 +60,6 @@ def reset_password(token):
         user.set_password(new_password)
         db.session.commit()
         flash("Your password has been reset successfully. Please log in.", "success")
-        return redirect(url_for("auth.login"))  # ✅ correct blueprint
+        return redirect(url_for("auth.login"))  
 
     return render_template("reset_password.html", form=form, title="Reset Password")

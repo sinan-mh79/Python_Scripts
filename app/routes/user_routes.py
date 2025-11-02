@@ -1,6 +1,6 @@
 from flask import render_template
 from flask_login import login_required, current_user
-from . import user  # ✅ user blueprint
+from . import user  
 
 @user.route("/dashboard")
 @login_required
@@ -38,7 +38,6 @@ def contact():
         title="Contact"
     )
 
-# ✅ NEW route for Skills page
 @user.route("/skills")
 @login_required
 def skills():
