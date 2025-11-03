@@ -120,7 +120,7 @@ def login():
             session["login_attempts"] = login_data
 
         login_user(user)
-        #
+        
         return redirect(url_for("user.dashboard"))
 
     return render_template("login.html", form=form, title="Login")
